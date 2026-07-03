@@ -9,9 +9,36 @@ import SwiftUI
 
 @main
 struct OutfitAIApp: App {
+    // Kullanıcı onboarding'i tamamladı mı? UserDefaults'ta otomatik saklanır.
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if hasCompletedOnboarding {
+                MainTabView()
+            } else {
+                OnboardingView {
+                    withAnimation {
+                        hasCompletedOnboarding = true
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Geçici placeholder - kendi ana tab view'ınızla değiştirin.
+struct MainTabView: View {
+    var body: some View {
+        TabView {
+            Text("Gardırop")
+                .tabItem { Label("Gardırop", systemImage: "square.grid.2x2") }
+
+            Text("Kombinler")
+                .tabItem { Label("Kombinler", systemImage: "sparkles") }
+
+            Text("Profil")
+                .tabItem { Label("Profil", systemImage: "person.crop.circle") }
         }
     }
 }
