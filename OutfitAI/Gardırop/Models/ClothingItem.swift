@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ClothingItem: Identifiable {
-    let id = UUID()
+    let id: UUID
     var image: String          // kategoriye göre fallback sistem ikonu
     var photo: UIImage?        // kullanıcının çektiği/seçtiği gerçek fotoğraf (arka planı silinmiş)
     var name: String

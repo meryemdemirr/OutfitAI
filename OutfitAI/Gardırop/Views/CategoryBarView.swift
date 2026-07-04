@@ -8,67 +8,39 @@
 import SwiftUI
 
 struct CategoryBarView: View {
-
     @Binding var selectedCategory: String
 
-    let categories = [
-        "All",
-        "Top",
-        "Bottom",
-        "Shoes",
-        "Accessories"
-    ]
+    private let categories = ["All", "Top", "Bottom", "Shoes", "Accessories"]
 
     var body: some View {
-
         ScrollView(.horizontal, showsIndicators: false) {
-
-            HStack(spacing: 12) {
-
+            HStack(spacing: 10) {
                 ForEach(categories, id: \.self) { category in
-
                     Button {
-
-                        withAnimation(.easeInOut) {
-                            selectedCategory = category
-                        }
-
+                        selectedCategory = category
                     } label: {
-
                         Text(category)
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundStyle(
-                                selectedCategory == category
-                                ? .white
-                                : .primary
-                            )
-                            .padding(.horizontal, 18)
-                            .padding(.vertical, 10)
+                            .font(.system(size: 14, weight: .medium))
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
                             .background(
                                 selectedCategory == category
-                                ? Color.purple
-                                : Color(.systemGray6)
+                                    ? Color.wardrobeAccent
+                                    : Color(.systemGray6)
+                            )
+                            .foregroundStyle(
+                                selectedCategory == category ? .white : .primary
                             )
                             .clipShape(Capsule())
-
                     }
                     .buttonStyle(.plain)
-
                 }
-
             }
-            .padding(.horizontal)
-
         }
-
     }
-
 }
 
 #Preview {
-
-    CategoryBarView(
-        selectedCategory: .constant("All")
-    )
-
+    CategoryBarView(selectedCategory: .constant("All"))
+        .padding()
 }

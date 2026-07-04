@@ -11,41 +11,7 @@ struct WardrobeView: View {
 
     @State private var selectedCategory: String = "All"
     @State private var showAddItem = false
-
-    @State private var clothingItems: [ClothingItem] = [
-        ClothingItem(
-            image: "hoodie",
-            photo: nil,
-            name: "Black Hoodie",
-            category: "Top",
-            color: "Black",
-            isFavorite: true
-        ),
-        ClothingItem(
-            image: "shirt",
-            photo: nil,
-            name: "White Shirt",
-            category: "Top",
-            color: "White",
-            isFavorite: false
-        ),
-        ClothingItem(
-            image: "jeans",
-            photo: nil,
-            name: "Blue Jeans",
-            category: "Bottom",
-            color: "Blue",
-            isFavorite: false
-        ),
-        ClothingItem(
-            image: "shoe",
-            photo: nil,
-            name: "Nike Sneakers",
-            category: "Shoes",
-            color: "White",
-            isFavorite: true
-        )
-    ]
+    @State private var clothingItems: [ClothingItem] = []
 
     let columns = [
         GridItem(.flexible(), spacing: 16),
@@ -72,19 +38,25 @@ struct WardrobeView: View {
 
                     VStack(alignment: .leading, spacing: 20) {
 
-                        Text("My Wardrobe")
-                            .font(.largeTitle.bold())
-
                         CategoryBarView(
                             selectedCategory: $selectedCategory
                         )
+                        .padding(.top, 8)
 
-                        LazyVGrid(columns: columns, spacing: 18) {
+                        if clothingItems.isEmpty {
 
-                            ForEach(filteredItems) { item in
+                            emptyState
 
-                                WardrobeCardView(item: item) {
-                                    toggleFavorite(for: item)
+                        } else {
+
+                            LazyVGrid(columns: columns, spacing: 18) {
+
+                                ForEach(filteredItems) { item in
+
+                                    WardrobeCardView(item: item) {
+                                        toggleFavorite(for: item)
+                                    }
+
                                 }
 
                             }
@@ -106,7 +78,7 @@ struct WardrobeView: View {
                         .font(.title2.bold())
                         .foregroundStyle(.white)
                         .frame(width: 60, height: 60)
-                        .background(.purple)
+                        .background(Color.wardrobeAccent)
                         .clipShape(Circle())
                         .shadow(radius: 10)
 
@@ -117,19 +89,41 @@ struct WardrobeView: View {
             .navigationBarHidden(true)
 
         }
+        .onAppear {
+            clothingItems = WardrobePersistence.loadItems()
+        }
         .sheet(isPresented: $showAddItem) {
 
             AddItemView { newItem in
                 clothingItems.append(newItem)
+                WardrobePersistence.saveItems(clothingItems)
             }
 
         }
 
     }
 
+    private var emptyState: some View {
+        VStack(spacing: 12) {
+            Image(systemName: "tshirt")
+                .font(.system(size: 40))
+                .foregroundStyle(Color.wardrobeAccent.opacity(0.6))
+
+            Text("Henüz kıyafet eklemediniz")
+                .font(.system(size: 16, weight: .semibold))
+
+            Text("Başlamak için sağ alttaki + butonuna dokunun")
+                .font(.system(size: 13))
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.top, 80)
+    }
+
     private func toggleFavorite(for item: ClothingItem) {
         guard let index = clothingItems.firstIndex(where: { $0.id == item.id }) else { return }
         clothingItems[index].isFavorite.toggle()
+        WardrobePersistence.saveItems(clothingItems)
     }
 
 }

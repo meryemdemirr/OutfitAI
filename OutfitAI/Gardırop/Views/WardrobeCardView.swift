@@ -34,7 +34,7 @@ struct WardrobeCardView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 65, height: 65)
-                        .foregroundStyle(.purple)
+                        .foregroundStyle(Color.wardrobeAccent)
 
                 }
 
@@ -144,6 +144,7 @@ struct WardrobeCardView: View {
 
     WardrobeCardView(
         item: ClothingItem(
+            id: UUID(),
             image: "tshirt",
             photo: nil,
             name: "Oversized Hoodie",
@@ -154,3 +155,4 @@ struct WardrobeCardView: View {
     )
 
 }
+

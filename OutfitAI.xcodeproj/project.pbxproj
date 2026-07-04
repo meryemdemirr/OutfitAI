@@ -25,6 +25,8 @@
 		354EB9F82FF868BA007B3B92 /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3594144A2FF862CC00CDC074 /* Color+hex.swift */; };
 		354EB9FA2FF92EDF007B3B92 /* BackgroundRemover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EB9F92FF92EDF007B3B92 /* BackgroundRemover.swift */; };
 		354EB9FC2FF92F73007B3B92 /* CameraCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EB9FB2FF92F73007B3B92 /* CameraCaptureView.swift */; };
+		354EBA2A2FF93C5D007B3B92 /* WardrobePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EBA292FF93C5D007B3B92 /* WardrobePersistence.swift */; };
+		354EBA2C2FF93CF1007B3B92 /* WardrobeEtheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EBA2B2FF93CF1007B3B92 /* WardrobeEtheme.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		354EB9F92FF92EDF007B3B92 /* BackgroundRemover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRemover.swift; sourceTree = "<group>"; };
 		354EB9FB2FF92F73007B3B92 /* CameraCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureView.swift; sourceTree = "<group>"; };
 		354EB9FD2FF9312B007B3B92 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		354EBA292FF93C5D007B3B92 /* WardrobePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WardrobePersistence.swift; sourceTree = "<group>"; };
+		354EBA2B2FF93CF1007B3B92 /* WardrobeEtheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WardrobeEtheme.swift; sourceTree = "<group>"; };
 		359413DA2FF858BD00CDC074 /* OutfitAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OutfitAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3594144A2FF862CC00CDC074 /* Color+hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+hex.swift"; sourceTree = "<group>"; };
 		3594144C2FF862CC00CDC074 /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
@@ -81,6 +85,7 @@
 				354EB9E92FF86554007B3B92 /* WardrobeCardView.swift */,
 				354EB9F92FF92EDF007B3B92 /* BackgroundRemover.swift */,
 				354EB9FB2FF92F73007B3B92 /* CameraCaptureView.swift */,
+				354EBA292FF93C5D007B3B92 /* WardrobePersistence.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -89,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				354EB9EC2FF865CF007B3B92 /* ClothingItem.swift */,
+				354EBA2B2FF93CF1007B3B92 /* WardrobeEtheme.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -232,6 +238,7 @@
 				354EB9FA2FF92EDF007B3B92 /* BackgroundRemover.swift in Sources */,
 				354EB9EF2FF8680A007B3B92 /* HomeView.swift in Sources */,
 				354EB9F12FF8687A007B3B92 /* OnboardingPage.swift in Sources */,
+				354EBA2C2FF93CF1007B3B92 /* WardrobeEtheme.swift in Sources */,
 				354EB9EA2FF86554007B3B92 /* WardrobeCardView.swift in Sources */,
 				354EB9E62FF864CB007B3B92 /* CategoryBarView.swift in Sources */,
 				354EB9E82FF864D9007B3B92 /* AddItemView.swift in Sources */,
@@ -243,6 +250,7 @@
 				354EB9F62FF8689E007B3B92 /* HomeViewModel.swift in Sources */,
 				354EB9F52FF86896007B3B92 /* SearchBarView.swift in Sources */,
 				354EB9F02FF86811007B3B92 /* OnboardingView.swift in Sources */,
+				354EBA2A2FF93C5D007B3B92 /* WardrobePersistence.swift in Sources */,
 				354EB9EE2FF866FE007B3B92 /* OutfitAIApp.swift in Sources */,
 				354EB9E42FF8645D007B3B92 /* WardrobeView.swift in Sources */,
 			);

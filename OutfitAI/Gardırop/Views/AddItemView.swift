@@ -123,6 +123,7 @@ struct AddItemView: View {
                     Button("Save") {
 
                         let item = ClothingItem(
+                            id: UUID(),
                             image: fallbackImageName(for: selectedCategory),
                             photo: selectedImage,
                             name: clothingName,
@@ -191,7 +192,7 @@ struct AddItemView: View {
             VStack(spacing: 12) {
                 Image(systemName: "photo.badge.plus")
                     .font(.system(size: 40))
-                    .foregroundStyle(.purple)
+                    .foregroundStyle(Color.wardrobeAccent)
 
                 Text("Add Clothing Photo")
                     .foregroundStyle(.primary)
