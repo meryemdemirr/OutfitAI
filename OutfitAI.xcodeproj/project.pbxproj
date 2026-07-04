@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3504446E2FF9748C005A9056 /* ClothingItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3504446D2FF9748C005A9056 /* ClothingItemDetailView.swift */; };
 		350444702FF97EDA005A9056 /* ClothingCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3504446F2FF97EDA005A9056 /* ClothingCategories.swift */; };
+		350444722FF9ACD0005A9056 /* SubcategoryBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350444712FF9ACD0005A9056 /* SubcategoryBarView.swift */; };
 		354EB9E42FF8645D007B3B92 /* WardrobeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EB9E32FF8645D007B3B92 /* WardrobeView.swift */; };
 		354EB9E62FF864CB007B3B92 /* CategoryBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EB9E52FF864CB007B3B92 /* CategoryBarView.swift */; };
 		354EB9E82FF864D9007B3B92 /* AddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EB9E72FF864D9007B3B92 /* AddItemView.swift */; };
@@ -33,6 +34,7 @@
 /* Begin PBXFileReference section */
 		3504446D2FF9748C005A9056 /* ClothingItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothingItemDetailView.swift; sourceTree = "<group>"; };
 		3504446F2FF97EDA005A9056 /* ClothingCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothingCategories.swift; sourceTree = "<group>"; };
+		350444712FF9ACD0005A9056 /* SubcategoryBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubcategoryBarView.swift; sourceTree = "<group>"; };
 		354EB9E32FF8645D007B3B92 /* WardrobeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WardrobeView.swift; sourceTree = "<group>"; };
 		354EB9E52FF864CB007B3B92 /* CategoryBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryBarView.swift; sourceTree = "<group>"; };
 		354EB9E72FF864D9007B3B92 /* AddItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemView.swift; sourceTree = "<group>"; };
@@ -57,6 +59,14 @@
 		359414582FF862CC00CDC074 /* Outfit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Outfit.swift; sourceTree = "<group>"; };
 		359414592FF862CC00CDC074 /* OutfitAIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutfitAIApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		350444752FF9BD3F005A9056 /* Outfits */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Outfits;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		359413D72FF858BD00CDC074 /* Frameworks */ = {
@@ -89,6 +99,7 @@
 				354EB9FB2FF92F73007B3B92 /* CameraCaptureView.swift */,
 				354EBA292FF93C5D007B3B92 /* WardrobePersistence.swift */,
 				3504446D2FF9748C005A9056 /* ClothingItemDetailView.swift */,
+				350444712FF9ACD0005A9056 /* SubcategoryBarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -150,6 +161,7 @@
 		3594145A2FF862CC00CDC074 /* OutfitAI */ = {
 			isa = PBXGroup;
 			children = (
+				350444752FF9BD3F005A9056 /* Outfits */,
 				354EB9FD2FF9312B007B3B92 /* Info.plist */,
 				354EB9E02FF863A1007B3B92 /* Gardırop */,
 				3594144B2FF862CC00CDC074 /* Extensions */,
@@ -178,6 +190,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				350444752FF9BD3F005A9056 /* Outfits */,
 			);
 			name = OutfitAI;
 			packageProductDependencies = (
@@ -237,6 +252,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				354EB9F22FF86882007B3B92 /* OnboardingPageView.swift in Sources */,
+				350444722FF9ACD0005A9056 /* SubcategoryBarView.swift in Sources */,
 				354EB9ED2FF865CF007B3B92 /* ClothingItem.swift in Sources */,
 				354EB9FA2FF92EDF007B3B92 /* BackgroundRemover.swift in Sources */,
 				354EB9EF2FF8680A007B3B92 /* HomeView.swift in Sources */,

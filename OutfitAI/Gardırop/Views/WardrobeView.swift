@@ -10,6 +10,7 @@ import SwiftUI
 struct WardrobeView: View {
 
     @State private var selectedCategory: String = "Tümü"
+    @State private var selectedSubcategory: String = "Tümü"
     @State private var showAddItem = false
     @State private var clothingItems: [ClothingItem] = []
     @State private var selectedItem: ClothingItem?
@@ -23,13 +24,17 @@ struct WardrobeView: View {
     private let softPink = Color(red: 0.957, green: 0.561, blue: 0.694)
     
     var filteredItems: [ClothingItem] {
-        if selectedCategory == "Tümü" {
-            return clothingItems
+        var items = clothingItems
+
+        if selectedCategory != "Tümü" {
+            items = items.filter { $0.category == selectedCategory }
         }
 
-        return clothingItems.filter {
-            $0.category == selectedCategory
+        if selectedSubcategory != "Tümü" {
+            items = items.filter { $0.subcategory == selectedSubcategory }
         }
+
+        return items
     }
 
     var body: some View {
@@ -46,6 +51,15 @@ struct WardrobeView: View {
                             selectedCategory: $selectedCategory
                         )
                         .padding(.top, 8)
+                        
+                        if selectedCategory != "Tümü" {
+                         
+                            SubcategoryBarView(selectedSubcategory: $selectedSubcategory,
+                            subcategories: ClothingCategories.subcategories[selectedCategory] ?? []
+                            )
+                         
+                        }
+                        Spacer().frame(height: 6)
 
                         if filteredItems.isEmpty {
 
@@ -100,6 +114,9 @@ struct WardrobeView: View {
         .onAppear {
             clothingItems = WardrobePersistence.loadItems()
         }
+        .onChange(of: selectedCategory) { _,_ in
+            selectedSubcategory = "Tümü"
+        }
         .sheet(isPresented: $showAddItem) {
 
             AddItemView { newItem in
@@ -126,6 +143,10 @@ struct WardrobeView: View {
 
     // Seçili kategoriye göre değişen boş durum mesajı.
     private var emptyStateMessage: String {
+        if selectedSubcategory != "Tümü" {
+            return "Henüz \(selectedSubcategory.lowercased()) eklemediniz"
+        }
+        
         switch selectedCategory {
         case "Tümü":
             return "Gardırobunuzda henüz ürün bulunmuyor"
