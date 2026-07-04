@@ -12,6 +12,7 @@ struct WardrobeView: View {
     @State private var selectedCategory: String = "Tümü"
     @State private var showAddItem = false
     @State private var clothingItems: [ClothingItem] = []
+    @State private var selectedItem: ClothingItem?
 
     let columns = [
         GridItem(.flexible(), spacing: 16),
@@ -58,6 +59,8 @@ struct WardrobeView: View {
 
                                     WardrobeCardView(item: item) {
                                         toggleFavorite(for: item)
+                                    } onSelect: {
+                                        selectedItem = item
                                     }
 
                                 }
@@ -105,6 +108,19 @@ struct WardrobeView: View {
             }
 
         }
+        .sheet(item: $selectedItem) { item in
+
+            ClothingItemDetailView(
+                item: item,
+                onSave: { updatedItem in
+                    updateItem(updatedItem)
+                },
+                onDelete: {
+                    deleteItem(item)
+                }
+            )
+
+        }
 
     }
 
@@ -148,6 +164,18 @@ struct WardrobeView: View {
     private func toggleFavorite(for item: ClothingItem) {
         guard let index = clothingItems.firstIndex(where: { $0.id == item.id }) else { return }
         clothingItems[index].isFavorite.toggle()
+        WardrobePersistence.saveItems(clothingItems)
+    }
+
+    private func updateItem(_ updated: ClothingItem) {
+        guard let index = clothingItems.firstIndex(where: { $0.id == updated.id }) else { return }
+        clothingItems[index] = updated
+        WardrobePersistence.saveItems(clothingItems)
+    }
+
+    private func deleteItem(_ item: ClothingItem) {
+        clothingItems.removeAll { $0.id == item.id }
+        WardrobePersistence.deletePhoto(for: item)
         WardrobePersistence.saveItems(clothingItems)
     }
 

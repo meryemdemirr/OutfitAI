@@ -117,4 +117,10 @@ enum WardrobePersistence {
             )
         }
     }
+
+    /// Bir kıyafet silindiğinde, diskte kalan fotoğraf dosyasını da temizler.
+    static func deletePhoto(for item: ClothingItem) {
+        let fileURL = photosDirectory.appendingPathComponent("\(item.id.uuidString).jpg")
+        try? FileManager.default.removeItem(at: fileURL)
+    }
 }

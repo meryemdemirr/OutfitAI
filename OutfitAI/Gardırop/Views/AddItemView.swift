@@ -12,12 +12,13 @@ struct AddItemView: View {
 
     @Environment(\.dismiss) private var dismiss
 
+    var itemToEdit: ClothingItem?
     var onSave: (ClothingItem) -> Void
 
-    @State private var clothingName = ""
-    @State private var selectedCategory = "Üst"
-    @State private var selectedColor = "Siyah"
-    @State private var isFavorite = false
+    @State private var clothingName: String
+    @State private var selectedCategory: String
+    @State private var selectedColor: String
+    @State private var isFavorite: Bool
 
     // Fotoğraf seçme akışı
     @State private var showSourceDialog = false
@@ -26,6 +27,16 @@ struct AddItemView: View {
     @State private var photosPickerItem: PhotosPickerItem?
     @State private var selectedImage: UIImage?
     @State private var isProcessingImage = false
+
+    init(itemToEdit: ClothingItem? = nil, onSave: @escaping (ClothingItem) -> Void) {
+        self.itemToEdit = itemToEdit
+        self.onSave = onSave
+        _clothingName = State(initialValue: itemToEdit?.name ?? "")
+        _selectedCategory = State(initialValue: itemToEdit?.category ?? "Üst")
+        _selectedColor = State(initialValue: itemToEdit?.color ?? "Siyah")
+        _isFavorite = State(initialValue: itemToEdit?.isFavorite ?? false)
+        _selectedImage = State(initialValue: itemToEdit?.photo)
+    }
 
     let categories = [
         "Üst",
@@ -106,7 +117,7 @@ struct AddItemView: View {
                 }
 
             }
-            .navigationTitle("Yeni Parça")
+            .navigationTitle(itemToEdit == nil ? "Yeni Parça" : "Parçayı Düzenle")
             .navigationBarTitleDisplayMode(.inline)
 
             .toolbar {
@@ -126,7 +137,7 @@ struct AddItemView: View {
                     Button("Kaydet") {
 
                         let item = ClothingItem(
-                            id: UUID(),
+                            id: itemToEdit?.id ?? UUID(),
                             image: fallbackImageName(for: selectedCategory),
                             photo: selectedImage,
                             name: clothingName,

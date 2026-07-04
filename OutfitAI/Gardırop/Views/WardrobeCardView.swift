@@ -11,6 +11,7 @@ struct WardrobeCardView: View {
 
     let item: ClothingItem
     var onToggleFavorite: () -> Void = {}
+    var onSelect: () -> Void = {}
 
     // Soft pembe - başka dosyaya bağımlı olmasın diye burada doğrudan tanımlı.
     private let softPink = Color(red: 0.957, green: 0.561, blue: 0.694)
@@ -89,6 +90,10 @@ struct WardrobeCardView: View {
         .background(.background)
         .clipShape(RoundedRectangle(cornerRadius: 22))
         .shadow(color: .black.opacity(0.08), radius: 10, x: 0, y: 5)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            onSelect()
+        }
 
     }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3504446E2FF9748C005A9056 /* ClothingItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3504446D2FF9748C005A9056 /* ClothingItemDetailView.swift */; };
 		354EB9E42FF8645D007B3B92 /* WardrobeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EB9E32FF8645D007B3B92 /* WardrobeView.swift */; };
 		354EB9E62FF864CB007B3B92 /* CategoryBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EB9E52FF864CB007B3B92 /* CategoryBarView.swift */; };
 		354EB9E82FF864D9007B3B92 /* AddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EB9E72FF864D9007B3B92 /* AddItemView.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3504446D2FF9748C005A9056 /* ClothingItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothingItemDetailView.swift; sourceTree = "<group>"; };
 		354EB9E32FF8645D007B3B92 /* WardrobeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WardrobeView.swift; sourceTree = "<group>"; };
 		354EB9E52FF864CB007B3B92 /* CategoryBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryBarView.swift; sourceTree = "<group>"; };
 		354EB9E72FF864D9007B3B92 /* AddItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemView.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				354EB9F92FF92EDF007B3B92 /* BackgroundRemover.swift */,
 				354EB9FB2FF92F73007B3B92 /* CameraCaptureView.swift */,
 				354EBA292FF93C5D007B3B92 /* WardrobePersistence.swift */,
+				3504446D2FF9748C005A9056 /* ClothingItemDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -246,6 +249,7 @@
 				354EB9F62FF8689E007B3B92 /* HomeViewModel.swift in Sources */,
 				354EB9F52FF86896007B3B92 /* SearchBarView.swift in Sources */,
 				354EB9F02FF86811007B3B92 /* OnboardingView.swift in Sources */,
+				3504446E2FF9748C005A9056 /* ClothingItemDetailView.swift in Sources */,
 				354EBA2A2FF93C5D007B3B92 /* WardrobePersistence.swift in Sources */,
 				354EB9EE2FF866FE007B3B92 /* OutfitAIApp.swift in Sources */,
 				354EB9E42FF8645D007B3B92 /* WardrobeView.swift in Sources */,
