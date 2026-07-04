@@ -163,6 +163,7 @@ struct WardrobeCardView: View {
             photo: nil,
             name: "Oversize Hoodie",
             category: "Üst",
+            subcategory: "Kapşonlu",
             color: "Siyah",
             isFavorite: true
         )

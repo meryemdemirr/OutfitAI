@@ -17,6 +17,7 @@ struct AddItemView: View {
 
     @State private var clothingName: String
     @State private var selectedCategory: String
+    @State private var selectedSubcategory: String
     @State private var selectedColor: String
     @State private var isFavorite: Bool
 
@@ -31,8 +32,12 @@ struct AddItemView: View {
     init(itemToEdit: ClothingItem? = nil, onSave: @escaping (ClothingItem) -> Void) {
         self.itemToEdit = itemToEdit
         self.onSave = onSave
+        let initialCategory = itemToEdit?.category ?? "Üst"
         _clothingName = State(initialValue: itemToEdit?.name ?? "")
-        _selectedCategory = State(initialValue: itemToEdit?.category ?? "Üst")
+        _selectedCategory = State(initialValue: initialCategory)
+        _selectedSubcategory = State(
+            initialValue: itemToEdit?.subcategory ?? ClothingCategories.firstSubcategory(for: initialCategory)
+        )
         _selectedColor = State(initialValue: itemToEdit?.color ?? "Siyah")
         _isFavorite = State(initialValue: itemToEdit?.isFavorite ?? false)
         _selectedImage = State(initialValue: itemToEdit?.photo)
@@ -88,6 +93,19 @@ struct AddItemView: View {
                         }
 
                     }
+                    .onChange(of: selectedCategory) { _, newCategory in
+                                            selectedSubcategory = ClothingCategories.firstSubcategory(for: newCategory)
+                    }
+                    
+                    Picker("Alt Kategori", selection: $selectedSubcategory) {
+                     
+                        ForEach(ClothingCategories.subcategories[selectedCategory] ?? [], id: \.self) { subcategory in
+                     
+                            Text(subcategory)
+                     
+                        }
+                     
+                    }
 
                     Picker("Renk", selection: $selectedColor) {
 
@@ -142,6 +160,7 @@ struct AddItemView: View {
                             photo: selectedImage,
                             name: clothingName,
                             category: selectedCategory,
+                            subcategory: selectedSubcategory,
                             color: selectedColor,
                             isFavorite: isFavorite
                         )

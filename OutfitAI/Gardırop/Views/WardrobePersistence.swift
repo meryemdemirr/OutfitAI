@@ -48,6 +48,7 @@ enum WardrobePersistence {
         let photoFileName: String?
         let name: String
         let category: String
+        let subcategory: String
         let color: String
         let isFavorite: Bool
     }
@@ -79,6 +80,7 @@ enum WardrobePersistence {
                     photoFileName: photoFileName,
                     name: item.name,
                     category: item.category,
+                    subcategory: item.subcategory,
                     color: item.color,
                     isFavorite: item.isFavorite
                 )
@@ -112,6 +114,7 @@ enum WardrobePersistence {
                 photo: photo,
                 name: record.name,
                 category: record.category,
+                subcategory: record.subcategory,
                 color: record.color,
                 isFavorite: record.isFavorite
             )

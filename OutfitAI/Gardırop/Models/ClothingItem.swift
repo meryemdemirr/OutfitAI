@@ -13,6 +13,7 @@ struct ClothingItem: Identifiable {
     var photo: UIImage?        // kullanıcının çektiği/seçtiği gerçek fotoğraf (arka planı silinmiş)
     var name: String
     var category: String
+    let subcategory: String
     var color: String
     var isFavorite: Bool
 }

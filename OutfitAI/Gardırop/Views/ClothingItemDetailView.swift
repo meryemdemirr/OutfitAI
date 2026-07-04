@@ -82,6 +82,7 @@ struct ClothingItemDetailView: View {
 
                         HStack(spacing: 12) {
                             detailTag(title: "Kategori", value: item.category)
+                            detailTag(title: "Tür", value: item.subcategory)
                             detailTag(title: "Renk", value: item.color)
                         }
 
@@ -187,6 +188,7 @@ struct ClothingItemDetailView: View {
             photo: nil,
             name: "Oversize Hoodie",
             category: "Üst",
+            subcategory: "Kapşonlu",
             color: "Siyah",
             isFavorite: true
         ),
