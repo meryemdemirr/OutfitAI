@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WardrobeView: View {
 
-    @State private var selectedCategory: String = "All"
+    @State private var selectedCategory: String = "Tümü"
     @State private var showAddItem = false
     @State private var clothingItems: [ClothingItem] = []
 
@@ -18,8 +18,11 @@ struct WardrobeView: View {
         GridItem(.flexible(), spacing: 16)
     ]
 
+    // Soft pembe - başka dosyaya bağımlı olmasın diye burada doğrudan tanımlı.
+    private let softPink = Color(red: 0.957, green: 0.561, blue: 0.694)
+    
     var filteredItems: [ClothingItem] {
-        if selectedCategory == "All" {
+        if selectedCategory == "Tümü" {
             return clothingItems
         }
 
@@ -43,7 +46,7 @@ struct WardrobeView: View {
                         )
                         .padding(.top, 8)
 
-                        if clothingItems.isEmpty {
+                        if filteredItems.isEmpty {
 
                             emptyState
 
@@ -76,11 +79,13 @@ struct WardrobeView: View {
 
                     Image(systemName: "plus")
                         .font(.title2.bold())
-                        .foregroundStyle(.white)
+                        .foregroundColor(.white)
                         .frame(width: 60, height: 60)
-                        .background(Color.wardrobeAccent)
-                        .clipShape(Circle())
-                        .shadow(radius: 10)
+                        .background(
+                            Circle()
+                                .fill(softPink)
+                        )
+                        .shadow(color: softPink.opacity(0.4), radius: 10, x: 0, y: 6)
 
                 }
                 .padding()
@@ -103,18 +108,38 @@ struct WardrobeView: View {
 
     }
 
+    // Seçili kategoriye göre değişen boş durum mesajı.
+    private var emptyStateMessage: String {
+        switch selectedCategory {
+        case "Tümü":
+            return "Gardırobunuzda henüz ürün bulunmuyor"
+        case "Üst":
+            return "Henüz üst giyim eklemediniz"
+        case "Alt":
+            return "Henüz alt giyim eklemediniz"
+        case "Ayakkabı":
+            return "Henüz ayakkabı eklemediniz"
+        case "Aksesuar":
+            return "Henüz aksesuar eklemediniz"
+        default:
+            return "Henüz ürün eklemediniz"
+        }
+    }
+
     private var emptyState: some View {
         VStack(spacing: 12) {
             Image(systemName: "tshirt")
                 .font(.system(size: 40))
-                .foregroundStyle(Color.wardrobeAccent.opacity(0.6))
+                .foregroundColor(softPink.opacity(0.6))
 
-            Text("Henüz kıyafet eklemediniz")
+            Text(emptyStateMessage)
                 .font(.system(size: 16, weight: .semibold))
+                .multilineTextAlignment(.center)
 
             Text("Başlamak için sağ alttaki + butonuna dokunun")
                 .font(.system(size: 13))
                 .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
         .padding(.top, 80)

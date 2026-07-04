@@ -15,8 +15,8 @@ struct AddItemView: View {
     var onSave: (ClothingItem) -> Void
 
     @State private var clothingName = ""
-    @State private var selectedCategory = "Top"
-    @State private var selectedColor = "Black"
+    @State private var selectedCategory = "Üst"
+    @State private var selectedColor = "Siyah"
     @State private var isFavorite = false
 
     // Fotoğraf seçme akışı
@@ -28,21 +28,24 @@ struct AddItemView: View {
     @State private var isProcessingImage = false
 
     let categories = [
-        "Top",
-        "Bottom",
-        "Shoes",
-        "Accessories"
+        "Üst",
+        "Alt",
+        "Ayakkabı",
+        "Aksesuar"
     ]
 
     let colors = [
-        "Black",
-        "White",
-        "Blue",
-        "Gray",
-        "Brown",
-        "Red",
-        "Green"
+        "Siyah",
+        "Beyaz",
+        "Mavi",
+        "Gri",
+        "Kahverengi",
+        "Kırmızı",
+        "Yeşil"
     ]
+
+    // Fotoğraf alanı için ayırt edici, tıklanabilir olduğunu belirten mavi vurgu.
+    private let photoActionColor = Color.blue
 
     var body: some View {
 
@@ -50,7 +53,7 @@ struct AddItemView: View {
 
             Form {
 
-                Section("Photo") {
+                Section("Fotoğraf") {
 
                     Button {
                         showSourceDialog = true
@@ -61,11 +64,11 @@ struct AddItemView: View {
 
                 }
 
-                Section("Information") {
+                Section("Bilgiler") {
 
-                    TextField("Clothing Name", text: $clothingName)
+                    TextField("Kıyafet Adı", text: $clothingName)
 
-                    Picker("Category", selection: $selectedCategory) {
+                    Picker("Kategori", selection: $selectedCategory) {
 
                         ForEach(categories, id: \.self) { category in
 
@@ -75,7 +78,7 @@ struct AddItemView: View {
 
                     }
 
-                    Picker("Color", selection: $selectedColor) {
+                    Picker("Renk", selection: $selectedColor) {
 
                         ForEach(colors, id: \.self) { color in
 
@@ -86,7 +89,7 @@ struct AddItemView: View {
                     }
 
                     HStack {
-                        Text("Favorite")
+                        Text("Favori")
 
                         Spacer()
 
@@ -95,7 +98,7 @@ struct AddItemView: View {
                         } label: {
                             Image(systemName: isFavorite ? "heart.fill" : "heart")
                                 .font(.system(size: 20))
-                                .foregroundStyle(isFavorite ? .red : .secondary)
+                                .foregroundColor(isFavorite ? .red : .secondary)
                         }
                         .buttonStyle(.plain)
                     }
@@ -103,14 +106,14 @@ struct AddItemView: View {
                 }
 
             }
-            .navigationTitle("New Item")
+            .navigationTitle("Yeni Parça")
             .navigationBarTitleDisplayMode(.inline)
 
             .toolbar {
 
                 ToolbarItem(placement: .topBarLeading) {
 
-                    Button("Cancel") {
+                    Button("İptal") {
 
                         dismiss()
 
@@ -120,7 +123,7 @@ struct AddItemView: View {
 
                 ToolbarItem(placement: .topBarTrailing) {
 
-                    Button("Save") {
+                    Button("Kaydet") {
 
                         let item = ClothingItem(
                             id: UUID(),
@@ -142,10 +145,10 @@ struct AddItemView: View {
                 }
 
             }
-            .confirmationDialog("Add Photo", isPresented: $showSourceDialog, titleVisibility: .visible) {
-                Button("Take Photo") { showCamera = true }
-                Button("Choose from Library") { showPhotosPicker = true }
-                Button("Cancel", role: .cancel) {}
+            .confirmationDialog("Fotoğraf Ekle", isPresented: $showSourceDialog, titleVisibility: .visible) {
+                Button("Fotoğraf Çek") { showCamera = true }
+                Button("Galeriden Seç") { showPhotosPicker = true }
+                Button("Vazgeç", role: .cancel) {}
             }
             .photosPicker(isPresented: $showPhotosPicker, selection: $photosPickerItem, matching: .images)
             .onChange(of: photosPickerItem) { _, newItem in
@@ -169,7 +172,7 @@ struct AddItemView: View {
         if isProcessingImage {
             VStack(spacing: 12) {
                 ProgressView()
-                Text("Removing background…")
+                Text("Arka plan siliniyor…")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -182,9 +185,9 @@ struct AddItemView: View {
                     .scaledToFit()
                     .frame(height: 160)
 
-                Text("Tap to change photo")
+                Text("Değiştirmek için dokunun")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundColor(photoActionColor)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 12)
@@ -192,10 +195,11 @@ struct AddItemView: View {
             VStack(spacing: 12) {
                 Image(systemName: "photo.badge.plus")
                     .font(.system(size: 40))
-                    .foregroundStyle(Color.wardrobeAccent)
+                    .foregroundColor(photoActionColor)
 
-                Text("Add Clothing Photo")
-                    .foregroundStyle(.primary)
+                Text("Kıyafet Fotoğrafı Ekle")
+                    .foregroundColor(photoActionColor)
+                    .fontWeight(.medium)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 30)
@@ -233,10 +237,10 @@ struct AddItemView: View {
 
     private func fallbackImageName(for category: String) -> String {
         switch category {
-        case "Top": return "tshirt"
-        case "Bottom": return "figure.walk"
-        case "Shoes": return "shoeprints.fill"
-        case "Accessories": return "sunglasses"
+        case "Üst": return "tshirt"
+        case "Alt": return "figure.walk"
+        case "Ayakkabı": return "shoeprints.fill"
+        case "Aksesuar": return "sunglasses"
         default: return "tshirt"
         }
     }

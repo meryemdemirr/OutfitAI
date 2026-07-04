@@ -10,28 +10,29 @@ import SwiftUI
 struct CategoryBarView: View {
     @Binding var selectedCategory: String
 
-    private let categories = ["All", "Top", "Bottom", "Shoes", "Accessories"]
+    static let categories = ["Tümü", "Üst", "Alt", "Ayakkabı", "Aksesuar"]
 
+    // Soft pembe - başka dosyaya bağımlı olmasın diye burada doğrudan tanımlı.
+    private let softPink = Color(red: 0.957, green: 0.561, blue: 0.694)
+    
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
-                ForEach(categories, id: \.self) { category in
+                ForEach(Self.categories, id: \.self) { category in
+                    let isSelected = selectedCategory == category
+
                     Button {
                         selectedCategory = category
                     } label: {
                         Text(category)
-                            .font(.system(size: 14, weight: .medium))
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(isSelected ? .white : .primary)
                             .padding(.horizontal, 16)
                             .padding(.vertical, 8)
                             .background(
-                                selectedCategory == category
-                                    ? Color.wardrobeAccent
-                                    : Color(.systemGray6)
+                                Capsule()
+                                    .fill(isSelected ? softPink : Color(.systemGray6))
                             )
-                            .foregroundStyle(
-                                selectedCategory == category ? .white : .primary
-                            )
-                            .clipShape(Capsule())
                     }
                     .buttonStyle(.plain)
                 }
@@ -41,6 +42,6 @@ struct CategoryBarView: View {
 }
 
 #Preview {
-    CategoryBarView(selectedCategory: .constant("All"))
+    CategoryBarView(selectedCategory: .constant("Tümü"))
         .padding()
 }

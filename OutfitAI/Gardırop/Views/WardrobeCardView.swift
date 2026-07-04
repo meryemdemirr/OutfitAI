@@ -12,6 +12,9 @@ struct WardrobeCardView: View {
     let item: ClothingItem
     var onToggleFavorite: () -> Void = {}
 
+    // Soft pembe - başka dosyaya bağımlı olmasın diye burada doğrudan tanımlı.
+    private let softPink = Color(red: 0.957, green: 0.561, blue: 0.694)
+    
     var body: some View {
 
         VStack(alignment: .leading, spacing: 12) {
@@ -34,7 +37,7 @@ struct WardrobeCardView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 65, height: 65)
-                        .foregroundStyle(Color.wardrobeAccent)
+                        .foregroundColor(softPink)
 
                 }
 
@@ -52,11 +55,14 @@ struct WardrobeCardView: View {
 
                     Spacer()
 
+                    // Favori kalbi - her zaman görünür ve tıklanabilir.
                     Button(action: onToggleFavorite) {
                         Image(systemName: item.isFavorite ? "heart.fill" : "heart")
-                            .foregroundStyle(item.isFavorite ? .red : .secondary)
+                            .font(.system(size: 17))
+                            .foregroundColor(item.isFavorite ? .red : .secondary)
                     }
                     .buttonStyle(.plain)
+                    .contentShape(Rectangle())
 
                 }
 
@@ -90,16 +96,16 @@ struct WardrobeCardView: View {
 
         switch category {
 
-        case "Top":
+        case "Üst":
             return "tshirt"
 
-        case "Bottom":
+        case "Alt":
             return "figure.walk"
 
-        case "Shoes":
+        case "Ayakkabı":
             return "shoeprints.fill"
 
-        case "Accessories":
+        case "Aksesuar":
             return "sunglasses"
 
         default:
@@ -113,22 +119,25 @@ struct WardrobeCardView: View {
 
         switch color {
 
-        case "Black":
+        case "Siyah":
             return .black
 
-        case "White":
+        case "Beyaz":
             return .gray
 
-        case "Blue":
+        case "Mavi":
             return .blue
 
-        case "Red":
+        case "Gri":
+            return .gray
+
+        case "Kırmızı":
             return .red
 
-        case "Green":
+        case "Yeşil":
             return .green
 
-        case "Brown":
+        case "Kahverengi":
             return .brown
 
         default:
@@ -147,12 +156,11 @@ struct WardrobeCardView: View {
             id: UUID(),
             image: "tshirt",
             photo: nil,
-            name: "Oversized Hoodie",
-            category: "Top",
-            color: "Black",
+            name: "Oversize Hoodie",
+            category: "Üst",
+            color: "Siyah",
             isFavorite: true
         )
     )
 
 }
-
