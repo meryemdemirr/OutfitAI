@@ -27,7 +27,7 @@ struct SavedOutfitCardView: View {
 
                     Image(uiImage: collage)
                         .resizable()
-                        .aspectRatio(CollageGenerator.canvasSize, contentMode: .fill)
+                        .scaledToFit()
 
                 } else {
 

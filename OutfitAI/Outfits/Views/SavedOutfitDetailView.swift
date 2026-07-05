@@ -33,7 +33,7 @@ struct SavedOutfitDetailView: View {
 
                             Image(uiImage: collage)
                                 .resizable()
-                                .aspectRatio(CollageGenerator.canvasSize, contentMode: .fit)
+                                .scaledToFit()
                                 .padding(12)
 
                         } else {
