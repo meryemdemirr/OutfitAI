@@ -98,25 +98,7 @@ struct WardrobeCardView: View {
     }
 
     private func imageName(for category: String) -> String {
-
-        switch category {
-
-        case "Üst":
-            return "tshirt"
-
-        case "Alt":
-            return "figure.walk"
-
-        case "Ayakkabı":
-            return "shoeprints.fill"
-
-        case "Aksesuar":
-            return "sunglasses"
-
-        default:
-            return "tshirt"
-
-        }
+        ClothingCategories.iconName(for: category)
 
     }
 

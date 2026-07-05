@@ -27,13 +27,21 @@ struct OutfitPreviewView: View {
 
                 if let collageImage {
 
-                    Image(uiImage: collageImage)
-                        .resizable()
-                        .aspectRatio(CollageGenerator.canvasSize, contentMode: .fit)
-                        .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
-                        .shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 8)
-                        .padding(.horizontal, 20)
-                        .padding(.top, 12)
+                    ZStack {
+                     
+                        RoundedRectangle(cornerRadius: 28, style: .continuous)
+                            .fill(Color(.systemGray6))
+                    
+                        Image(uiImage: collageImage)
+                            .resizable()
+                            .aspectRatio(CollageGenerator.canvasSize, contentMode: .fit)
+                     
+                    }
+                    .aspectRatio(CollageGenerator.canvasSize, contentMode: .fit)
+                    .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+                    .shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 8)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 12)
 
                 } else {
 

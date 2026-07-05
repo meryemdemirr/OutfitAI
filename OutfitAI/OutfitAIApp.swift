@@ -37,7 +37,7 @@ struct MainTabView: View {
             WardrobeView()
                 .tabItem { Label("Gardırop", systemImage: "square.grid.2x2") }
 
-            Text("Kombinler")
+            OutfitsView()
                 .tabItem { Label("Kombinler", systemImage: "sparkles") }
 
             Text("Profil")

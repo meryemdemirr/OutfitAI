@@ -42,13 +42,8 @@ struct AddItemView: View {
         _isFavorite = State(initialValue: itemToEdit?.isFavorite ?? false)
         _selectedImage = State(initialValue: itemToEdit?.photo)
     }
-
-    let categories = [
-        "Üst",
-        "Alt",
-        "Ayakkabı",
-        "Aksesuar"
-    ]
+    
+    let categories = ClothingCategories.main
 
     let colors = [
         "Siyah",
@@ -266,13 +261,7 @@ struct AddItemView: View {
     }
 
     private func fallbackImageName(for category: String) -> String {
-        switch category {
-        case "Üst": return "tshirt"
-        case "Alt": return "figure.walk"
-        case "Ayakkabı": return "shoeprints.fill"
-        case "Aksesuar": return "sunglasses"
-        default: return "tshirt"
-        }
+        ClothingCategories.iconName(for: category)
     }
 
 }

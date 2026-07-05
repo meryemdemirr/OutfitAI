@@ -10,7 +10,7 @@ import SwiftUI
 struct CategoryBarView: View {
     @Binding var selectedCategory: String
 
-    static let categories = ["Tümü", "Üst", "Alt", "Ayakkabı", "Aksesuar"]
+    static let categories = ["Tümü"] + ClothingCategories.main
 
     // Soft pembe - başka dosyaya bağımlı olmasın diye burada doğrudan tanımlı.
     private let softPink = Color(red: 0.957, green: 0.561, blue: 0.694)
