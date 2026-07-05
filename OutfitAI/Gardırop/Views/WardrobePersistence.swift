@@ -62,8 +62,8 @@ enum WardrobePersistence {
         for item in items {
             var photoFileName: String?
 
-            if let photo = item.photo, let data = photo.jpegData(compressionQuality: 0.85) {
-                let fileName = "\(item.id.uuidString).jpg"
+            if let photo = item.photo, let data = photo.pngData() {
+                let fileName = "\(item.id.uuidString).png"
                 let fileURL = photosDirectory.appendingPathComponent(fileName)
                 do {
                     try data.write(to: fileURL)
@@ -121,9 +121,11 @@ enum WardrobePersistence {
         }
     }
 
-    /// Bir kıyafet silindiğinde, diskte kalan fotoğraf dosyasını da temizler.
     static func deletePhoto(for item: ClothingItem) {
-        let fileURL = photosDirectory.appendingPathComponent("\(item.id.uuidString).jpg")
+        // Hem eski .jpg hem yeni .png dosyalarını güvenle silmek için
+        // doğrudan kayıtlı dosya adını kullanmak en doğrusudur:
+        let fileName = "\(item.id.uuidString).png"
+        let fileURL = photosDirectory.appendingPathComponent(fileName)
         try? FileManager.default.removeItem(at: fileURL)
     }
 }

@@ -180,7 +180,7 @@ enum BackgroundRemover {
     /// Görselde alfa değeri belirgin olan (yani gerçekten görünür) piksellerin
     /// kapladığı alanı bulur ve görseli o alana (küçük bir payla) kırpar.
     /// Böylece kıyafet, etrafındaki boşluk atılarak kombin içinde daha büyük görünür.
-    private static func cropToOpaqueBounds(_ image: UIImage, alphaThreshold: UInt8 = 12, paddingRatio: CGFloat = 0.03) -> UIImage {
+    private static func cropToOpaqueBounds(_ image: UIImage, alphaThreshold: UInt8 = 80, paddingRatio: CGFloat = 0.0) -> UIImage {
         guard let cgImage = image.cgImage else { return image }
 
         let width = cgImage.width
@@ -260,7 +260,8 @@ enum BackgroundRemover {
         format.scale = image.scale
         let renderer = UIGraphicsImageRenderer(size: newSize, format: format)
 
-        return renderer.image { _ in
+        return renderer.image { context in
+            context.cgContext.interpolationQuality = CGInterpolationQuality.none
             image.draw(in: CGRect(origin: .zero, size: newSize))
         }
     }
