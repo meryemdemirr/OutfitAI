@@ -72,8 +72,7 @@ struct OutfitsView: View {
                 .padding()
 
             }
-            .navigationTitle("Kombinler")
-            .navigationBarTitleDisplayMode(.large)
+            
 
         }
         .onAppear {

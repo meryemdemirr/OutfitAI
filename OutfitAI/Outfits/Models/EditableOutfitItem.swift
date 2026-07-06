@@ -13,8 +13,13 @@ struct EditableOutfitItem: Identifiable {
     let clothingItem: ClothingItem
 
     var position: CGSize
+    var lastPosition: CGSize
+
     var scale: CGFloat
+    var lastScale: CGFloat
+
     var rotation: Angle
+    var lastRotation: Angle
 
     init(
         clothingItem: ClothingItem,
@@ -22,10 +27,17 @@ struct EditableOutfitItem: Identifiable {
         scale: CGFloat = 1.0,
         rotation: Angle = .zero
     ) {
+
         self.id = clothingItem.id
         self.clothingItem = clothingItem
+
         self.position = position
+        self.lastPosition = position
+
         self.scale = scale
+        self.lastScale = scale
+
         self.rotation = rotation
+        self.lastRotation = rotation
     }
 }

@@ -10,13 +10,13 @@ import SwiftUI
 
 enum CollageGenerator {
 
-    // Kaydedilen kombin görselinin boyutu HER ZAMAN sabit.
+    /// Kaydedilen kombin görselinin sabit boyutu.
     static let canvasSize = CGSize(
         width: 1080,
         height: 1440
     )
 
-    // Editörde gösterilen ürünlerin temel boyutu.
+    /// OutfitEditorView içinde ürünlere verilen temel frame.
     static let editorItemSize = CGSize(
         width: 180,
         height: 220
@@ -40,7 +40,6 @@ enum CollageGenerator {
         }
 
         let format = UIGraphicsImageRendererFormat()
-
         format.opaque = true
         format.scale = 1
 
@@ -53,7 +52,7 @@ enum CollageGenerator {
 
             let context = rendererContext.cgContext
 
-            // MARK: - Sabit Arka Plan
+            // MARK: - Arka Plan
 
             backgroundColor.setFill()
 
@@ -64,37 +63,62 @@ enum CollageGenerator {
                 )
             )
 
-            // MARK: - Sabit Canvas Oranı
+            /*
+             Editör canvas'ının TAMAMI kaydedilecek.
 
-            let scaleX =
-                canvasSize.width / editorSize.width
+             Ürünlerin birbirine yakın veya uzak olması
+             hiçbir şekilde kadrajı değiştirmeyecek.
 
-            let scaleY =
+             Tek bir ölçek değeri kullanıyoruz.
+             */
+
+            let canvasScale = min(
+                canvasSize.width / editorSize.width,
                 canvasSize.height / editorSize.height
+            )
 
-            // Ürünlerin konumuna göre herhangi bir
-            // zoom / crop / yeniden kadrajlama YAPILMIYOR.
+            /*
+             Editörün çıktı canvas'ında kapladığı gerçek alan.
+             */
+
+            let renderedEditorWidth =
+                editorSize.width * canvasScale
+
+            let renderedEditorHeight =
+                editorSize.height * canvasScale
+
+            /*
+             Canvas ortalama farkları.
+
+             Böylece editör 1080x1440 içine
+             tam ortalanır.
+             */
+
+            let canvasOffsetX =
+                (canvasSize.width - renderedEditorWidth) / 2
+
+            let canvasOffsetY =
+                (canvasSize.height - renderedEditorHeight) / 2
 
             for item in items {
 
-                guard let photo =
-                        item.clothingItem.photo else {
+                guard let photo = item.clothingItem.photo else {
                     continue
                 }
 
                 drawItem(
                     photo,
                     item: item,
-                    scaleX: scaleX,
-                    scaleY: scaleY,
+                    canvasScale: canvasScale,
+                    canvasOffsetX: canvasOffsetX,
+                    canvasOffsetY: canvasOffsetY,
+                    editorSize: editorSize,
                     in: context
                 )
             }
         }
 
-        print(
-            "✅ Sabit canvas oluşturuldu: \(image.size)"
-        )
+        print("✅ Sabit canvas oluşturuldu: \(image.size)")
 
         return image
     }
@@ -104,8 +128,10 @@ enum CollageGenerator {
     private static func drawItem(
         _ image: UIImage,
         item: EditableOutfitItem,
-        scaleX: CGFloat,
-        scaleY: CGFloat,
+        canvasScale: CGFloat,
+        canvasOffsetX: CGFloat,
+        canvasOffsetY: CGFloat,
+        editorSize: CGSize,
         in context: CGContext
     ) {
 
@@ -116,14 +142,24 @@ enum CollageGenerator {
             return
         }
 
-        // Editördeki 180x220 ürün alanını
-        // çıktı canvasına birebir oranlıyoruz.
+        // MARK: - Ürün Boyutu
+
+        /*
+         Editörde ürün:
+
+         180 x 220
+
+         frame içinde gösteriliyor.
+
+         Aynı boyutu sadece çıktı canvas'ına
+         oranlayarak kaydediyoruz.
+         */
 
         let baseWidth =
-            editorItemSize.width * scaleX
+            editorItemSize.width * canvasScale
 
         let baseHeight =
-            editorItemSize.height * scaleY
+            editorItemSize.height * canvasScale
 
         let imageAspect =
             imageSize.width / imageSize.height
@@ -136,8 +172,7 @@ enum CollageGenerator {
             height: baseHeight
         )
 
-        // Aspect Fit
-        // Görselin oranı kesinlikle bozulmaz.
+        // MARK: - Aspect Fit
 
         if imageAspect > boxAspect {
 
@@ -154,47 +189,53 @@ enum CollageGenerator {
                 baseHeight * imageAspect
         }
 
-        // Kullanıcının verdiği büyüklük.
+        // Kullanıcının editörde verdiği büyüklük.
 
         drawSize.width *= item.scale
         drawSize.height *= item.scale
 
-        // Editördeki konumu,
-        // sabit canvas koordinatına dönüştürüyoruz.
+        // MARK: - Konum
+
+        /*
+         Editörde bütün ürünler canvas'ın
+         merkezinden position offset'i alıyor.
+
+         Aynı sistemi çıktı görseline taşıyoruz.
+         */
+
+        let editorCenterX =
+            editorSize.width / 2
+
+        let editorCenterY =
+            editorSize.height / 2
 
         let centerX =
-            canvasSize.width / 2
-            + item.position.width * scaleX
+            canvasOffsetX
+            + (editorCenterX + item.position.width)
+            * canvasScale
 
         let centerY =
-            canvasSize.height / 2
-            + item.position.height * scaleY
+            canvasOffsetY
+            + (editorCenterY + item.position.height)
+            * canvasScale
+
+        // MARK: - Çizim
 
         context.saveGState()
-
-        // Konum
 
         context.translateBy(
             x: centerX,
             y: centerY
         )
 
-        // Döndürme
-
         context.rotate(
-            by: CGFloat(
-                item.rotation.radians
-            )
+            by: CGFloat(item.rotation.radians)
         )
 
         let drawRect = CGRect(
-
             x: -drawSize.width / 2,
-
             y: -drawSize.height / 2,
-
             width: drawSize.width,
-
             height: drawSize.height
         )
 

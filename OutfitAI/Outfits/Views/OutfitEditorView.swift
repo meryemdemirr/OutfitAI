@@ -18,7 +18,6 @@ struct OutfitEditorView: View {
     @State private var selectedItemID: UUID?
 
     @State private var outfitName = ""
-    
     @State private var editorSize: CGSize = .zero
 
     @State private var backgroundColor: Color = Color(.systemGray6)
@@ -75,6 +74,7 @@ struct OutfitEditorView: View {
                 createEditableItems()
             }
             .sheet(isPresented: $showNameSheet) {
+
                 saveSheet
                     .presentationDetents([.height(260)])
                     .presentationDragIndicator(.visible)
@@ -99,60 +99,99 @@ struct OutfitEditorView: View {
                         Image(uiImage: photo)
                             .resizable()
                             .scaledToFit()
+
+                            // CollageGenerator ile aynı temel boyut.
                             .frame(
-                                width: 180,
-                                height: 220
+                                width: CollageGenerator.editorItemSize.width,
+                                height: CollageGenerator.editorItemSize.height
                             )
+
                             .scaleEffect(item.scale)
+
                             .rotationEffect(item.rotation)
+
                             .offset(item.position)
-                            .overlay {
 
-                                if selectedItemID == item.id {
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(
+                                        softPink,
+                                        lineWidth: selectedItemID == item.id ? 2 : 0
+                                    )
+                            )
 
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(
-                                            softPink,
-                                            style: StrokeStyle(
-                                                lineWidth: 2,
-                                                dash: [6]
-                                            )
-                                        )
-                                        .frame(
-                                            width: 180,
-                                            height: 220
-                                        )
-                                        .scaleEffect(item.scale)
-                                        .rotationEffect(item.rotation)
-                                        .offset(item.position)
-                                }
-                            }
                             .onTapGesture {
-
                                 selectedItemID = item.id
                             }
+
+                            // MARK: Sürükleme
+
                             .gesture(
 
                                 DragGesture()
+
                                     .onChanged { value in
 
-                                        item.position = value.translation
+                                        item.position = CGSize(
+
+                                            width:
+                                                item.lastPosition.width
+                                                + value.translation.width,
+
+                                            height:
+                                                item.lastPosition.height
+                                                + value.translation.height
+                                        )
+                                    }
+
+                                    .onEnded { _ in
+
+                                        item.lastPosition =
+                                            item.position
                                     }
                             )
+
+                            // MARK: Büyütme / Küçültme
+
                             .simultaneousGesture(
 
                                 MagnificationGesture()
+
                                     .onChanged { value in
 
-                                        item.scale = value
+                                        let newScale =
+                                            item.lastScale * value
+
+                                        item.scale = min(
+                                            max(newScale, 0.35),
+                                            3.0
+                                        )
+                                    }
+
+                                    .onEnded { _ in
+
+                                        item.lastScale =
+                                            item.scale
                                     }
                             )
+
+                            // MARK: Döndürme
+
                             .simultaneousGesture(
 
                                 RotationGesture()
+
                                     .onChanged { value in
 
-                                        item.rotation = value
+                                        item.rotation =
+                                            item.lastRotation
+                                            + value
+                                    }
+
+                                    .onEnded { _ in
+
+                                        item.lastRotation =
+                                            item.rotation
                                     }
                             )
                     }
@@ -162,16 +201,30 @@ struct OutfitEditorView: View {
                 width: geometry.size.width,
                 height: geometry.size.height
             )
+            .clipped()
+            .contentShape(Rectangle())
+
+            .onTapGesture {
+                selectedItemID = nil
+            }
+
             .onAppear {
                 editorSize = geometry.size
             }
+
             .onChange(of: geometry.size) { _, newSize in
                 editorSize = newSize
             }
-            
         }
-        .aspectRatio(3.0 / 4.0, contentMode: .fit)
+
+        // Canvas HER ZAMAN 3:4.
+        .aspectRatio(
+            3.0 / 4.0,
+            contentMode: .fit
+        )
+
         .padding()
+
         .shadow(
             color: .black.opacity(0.08),
             radius: 14,
@@ -189,7 +242,6 @@ struct OutfitEditorView: View {
             HStack {
 
                 Text("Arka Plan")
-
                     .font(
                         .system(
                             size: 16,
@@ -202,7 +254,6 @@ struct OutfitEditorView: View {
                 if selectedItemID != nil {
 
                     Button {
-
                         deleteSelectedItem()
 
                     } label: {
@@ -213,7 +264,10 @@ struct OutfitEditorView: View {
                 }
             }
 
-            ScrollView(.horizontal, showsIndicators: false) {
+            ScrollView(
+                .horizontal,
+                showsIndicators: false
+            ) {
 
                 HStack(spacing: 14) {
 
@@ -267,7 +321,12 @@ struct OutfitEditorView: View {
         VStack(spacing: 20) {
 
             Text("Kombini Kaydet")
-                .font(.system(size: 20, weight: .bold))
+                .font(
+                    .system(
+                        size: 20,
+                        weight: .bold
+                    )
+                )
 
             TextField(
                 "örn. Hafta Sonu Kombini",
@@ -280,7 +339,6 @@ struct OutfitEditorView: View {
             )
 
             Button {
-
                 saveOutfit()
 
             } label: {
@@ -319,30 +377,35 @@ struct OutfitEditorView: View {
             switch index {
 
             case 0:
+
                 position = CGSize(
                     width: 0,
-                    height: -120
+                    height: -100
                 )
 
             case 1:
+
                 position = CGSize(
                     width: 0,
                     height: 100
                 )
 
             case 2:
+
                 position = CGSize(
-                    width: -90,
-                    height: 230
+                    width: -80,
+                    height: 180
                 )
 
             case 3:
+
                 position = CGSize(
-                    width: 100,
-                    height: -180
+                    width: 90,
+                    height: -150
                 )
 
             default:
+
                 position = .zero
             }
 
@@ -375,19 +438,23 @@ struct OutfitEditorView: View {
 
     private func saveOutfit() {
 
-        let trimmedName = outfitName
-            .trimmingCharacters(
+        let trimmedName =
+            outfitName.trimmingCharacters(
                 in: .whitespacesAndNewlines
             )
 
         guard !editableItems.isEmpty else {
+
             print("❌ Kaydedilecek ürün bulunamadı")
+
             return
         }
 
         guard editorSize.width > 0,
               editorSize.height > 0 else {
+
             print("❌ Editor boyutu alınamadı")
+
             return
         }
 
@@ -395,33 +462,44 @@ struct OutfitEditorView: View {
             UIColor(backgroundColor)
 
         guard let collageImage =
-            CollageGenerator.generate(
-                from: editableItems,
-                backgroundColor: uiBackgroundColor,
-                editorSize: editorSize
-            )
+                CollageGenerator.generate(
+
+                    from: editableItems,
+
+                    backgroundColor:
+                        uiBackgroundColor,
+
+                    editorSize:
+                        editorSize
+                )
         else {
 
-            print("❌ Kombin görseli oluşturulamadı")
+            print(
+                "❌ Kombin görseli oluşturulamadı"
+            )
+
             return
         }
 
-        print(
-            "✅ Kombin oluşturuldu: \(collageImage.size)"
-        )
-
         let outfit = SavedOutfit(
+
             id: UUID(),
+
             name:
                 trimmedName.isEmpty
                 ? "Kombin"
                 : trimmedName,
+
             itemIDs:
                 editableItems.map {
                     $0.clothingItem.id
                 },
-            collageImage: collageImage,
-            createdAt: Date()
+
+            collageImage:
+                collageImage,
+
+            createdAt:
+                Date()
         )
 
         onSave(outfit)

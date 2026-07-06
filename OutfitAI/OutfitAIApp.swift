@@ -37,7 +37,7 @@ struct MainTabView: View {
             OutfitsView()
                 .tabItem { Label("Kombinler", systemImage: "sparkles") }
 
-            Text("Profil")
+            ProfileView()
                 .tabItem { Label("Profil", systemImage: "person.crop.circle") }
         }
     }
