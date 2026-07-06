@@ -31,9 +31,6 @@ struct OutfitAIApp: App {
 struct MainTabView: View {
     var body: some View {
         TabView {
-            HomeView()
-                .tabItem { Label("Ana Sayfa", systemImage: "house.fill") }
-
             WardrobeView()
                 .tabItem { Label("Gardırop", systemImage: "square.grid.2x2") }
 
