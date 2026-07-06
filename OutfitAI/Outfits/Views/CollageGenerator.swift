@@ -100,7 +100,11 @@ enum CollageGenerator {
             let canvasOffsetY =
                 (canvasSize.height - renderedEditorHeight) / 2
 
-            for item in items {
+            let sortedItems = items.sorted {
+                $0.zIndex < $1.zIndex
+            }
+
+            for item in sortedItems {
 
                 guard let photo = item.clothingItem.photo else {
                     continue
@@ -116,6 +120,7 @@ enum CollageGenerator {
                     in: context
                 )
             }
+
         }
 
         print("✅ Sabit canvas oluşturuldu: \(image.size)")

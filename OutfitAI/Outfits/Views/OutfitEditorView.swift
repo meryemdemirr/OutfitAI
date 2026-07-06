@@ -24,6 +24,8 @@ struct OutfitEditorView: View {
 
     @State private var showNameSheet = false
 
+    @State private var highestZIndex: Double = 0
+
     private let softPink = Color(
         red: 0.957,
         green: 0.561,
@@ -82,6 +84,7 @@ struct OutfitEditorView: View {
         }
     }
 
+
     // MARK: - Canvas
 
     private var editorCanvas: some View {
@@ -92,139 +95,174 @@ struct OutfitEditorView: View {
 
                 backgroundColor
 
-                ForEach($editableItems) { $item in
+
+                // MARK: - Ürünler
+
+                ForEach(editableItems) { item in
 
                     if let photo = item.clothingItem.photo {
 
-                        Image(uiImage: photo)
-                            .resizable()
-                            .scaledToFit()
+                        ZStack {
 
-                            // CollageGenerator ile aynı temel boyut.
-                            .frame(
-                                width: CollageGenerator.editorItemSize.width,
-                                height: CollageGenerator.editorItemSize.height
-                            )
+                            Image(uiImage: photo)
+                                .resizable()
+                                .scaledToFit()
 
-                            .scaleEffect(item.scale)
+                            if selectedItemID == item.id {
 
-                            .rotationEffect(item.rotation)
-
-                            .offset(item.position)
-
-                            .overlay(
                                 RoundedRectangle(cornerRadius: 12)
                                     .stroke(
                                         softPink,
-                                        lineWidth: selectedItemID == item.id ? 2 : 0
+                                        lineWidth: 2
                                     )
-                            )
-
-                            .onTapGesture {
-                                selectedItemID = item.id
+                                    .allowsHitTesting(false)
                             }
-
-                            // MARK: Sürükleme
-
-                            .gesture(
-
-                                DragGesture()
-
-                                    .onChanged { value in
-
-                                        item.position = CGSize(
-
-                                            width:
-                                                item.lastPosition.width
-                                                + value.translation.width,
-
-                                            height:
-                                                item.lastPosition.height
-                                                + value.translation.height
-                                        )
-                                    }
-
-                                    .onEnded { _ in
-
-                                        item.lastPosition =
-                                            item.position
-                                    }
-                            )
-
-                            // MARK: Büyütme / Küçültme
-
-                            .simultaneousGesture(
-
-                                MagnificationGesture()
-
-                                    .onChanged { value in
-
-                                        let newScale =
-                                            item.lastScale * value
-
-                                        item.scale = min(
-                                            max(newScale, 0.35),
-                                            3.0
-                                        )
-                                    }
-
-                                    .onEnded { _ in
-
-                                        item.lastScale =
-                                            item.scale
-                                    }
-                            )
-
-                            // MARK: Döndürme
-
-                            .simultaneousGesture(
-
-                                RotationGesture()
-
-                                    .onChanged { value in
-
-                                        item.rotation =
-                                            item.lastRotation
-                                            + value
-                                    }
-
-                                    .onEnded { _ in
-
-                                        item.lastRotation =
-                                            item.rotation
-                                    }
-                            )
+                        }
+                        .frame(
+                            width: CollageGenerator.editorItemSize.width,
+                            height: CollageGenerator.editorItemSize.height
+                        )
+                        .scaleEffect(item.scale)
+                        .rotationEffect(item.rotation)
+                        .offset(item.position)
+                        .allowsHitTesting(false)
                     }
                 }
+
+
+                // MARK: - Dokunma Alanı
+
+                Color.clear
+                    .contentShape(Rectangle())
+
+
+                    // MARK: Ürün Seçme
+
+                    .onTapGesture { location in
+
+                        selectItem(at: location)
+                    }
+
+
+                    // MARK: Sürükleme
+
+                    .gesture(
+
+                        DragGesture(minimumDistance: 5)
+
+                            .onChanged { value in
+
+                                // Her yeni sürüklemede dokunulan ürünü seç.
+                                if selectedItemID == nil {
+
+                                    selectItem(
+                                        at: value.startLocation
+                                    )
+                                }
+
+                                updateSelectedItem { item in
+
+                                    item.position = CGSize(
+
+                                        width:
+                                            item.lastPosition.width
+                                            + value.translation.width,
+
+                                        height:
+                                            item.lastPosition.height
+                                            + value.translation.height
+                                    )
+                                }
+                            }
+
+                            .onEnded { _ in
+
+                                updateSelectedItem { item in
+
+                                    item.lastPosition =
+                                        item.position
+                                }
+                            }
+                    )
+
+
+                    // MARK: Büyütme / Küçültme
+
+                    .simultaneousGesture(
+
+                        MagnificationGesture()
+
+                            .onChanged { value in
+
+                                updateSelectedItem { item in
+
+                                    let newScale =
+                                        item.lastScale * value
+
+                                    item.scale = min(
+                                        max(newScale, 0.35),
+                                        3.0
+                                    )
+                                }
+                            }
+
+                            .onEnded { _ in
+
+                                updateSelectedItem { item in
+
+                                    item.lastScale =
+                                        item.scale
+                                }
+                            }
+                    )
+
+
+                    // MARK: Döndürme
+
+                    .simultaneousGesture(
+
+                        RotationGesture()
+
+                            .onChanged { value in
+
+                                updateSelectedItem { item in
+
+                                    item.rotation =
+                                        item.lastRotation + value
+                                }
+                            }
+
+                            .onEnded { _ in
+
+                                updateSelectedItem { item in
+
+                                    item.lastRotation =
+                                        item.rotation
+                                }
+                            }
+                    )
             }
             .frame(
                 width: geometry.size.width,
                 height: geometry.size.height
             )
             .clipped()
-            .contentShape(Rectangle())
-
-            .onTapGesture {
-                selectedItemID = nil
-            }
 
             .onAppear {
+
                 editorSize = geometry.size
             }
 
             .onChange(of: geometry.size) { _, newSize in
+
                 editorSize = newSize
             }
         }
-
-        // Canvas HER ZAMAN 3:4.
         .aspectRatio(
             3.0 / 4.0,
             contentMode: .fit
         )
-
         .padding()
-
         .shadow(
             color: .black.opacity(0.08),
             radius: 14,
@@ -232,6 +270,7 @@ struct OutfitEditorView: View {
             y: 7
         )
     }
+
 
     // MARK: - Controls
 
@@ -254,6 +293,7 @@ struct OutfitEditorView: View {
                 if selectedItemID != nil {
 
                     Button {
+
                         deleteSelectedItem()
 
                     } label: {
@@ -263,6 +303,7 @@ struct OutfitEditorView: View {
                     }
                 }
             }
+
 
             ScrollView(
                 .horizontal,
@@ -301,6 +342,7 @@ struct OutfitEditorView: View {
                 }
             }
 
+
             if selectedItemID != nil {
 
                 Text(
@@ -313,6 +355,7 @@ struct OutfitEditorView: View {
         .padding(.horizontal, 20)
         .padding(.bottom, 20)
     }
+
 
     // MARK: - Save Sheet
 
@@ -328,6 +371,7 @@ struct OutfitEditorView: View {
                     )
                 )
 
+
             TextField(
                 "örn. Hafta Sonu Kombini",
                 text: $outfitName
@@ -338,7 +382,9 @@ struct OutfitEditorView: View {
                 RoundedRectangle(cornerRadius: 14)
             )
 
+
             Button {
+
                 saveOutfit()
 
             } label: {
@@ -361,6 +407,7 @@ struct OutfitEditorView: View {
         }
         .padding(20)
     }
+
 
     // MARK: - Create Items
 
@@ -409,16 +456,86 @@ struct OutfitEditorView: View {
                 position = .zero
             }
 
+            let zIndex = Double(index)
+
             editableItems.append(
 
                 EditableOutfitItem(
                     clothingItem: item,
-                    position: position
+                    position: position,
+                    zIndex: zIndex
                 )
+            )
+
+            highestZIndex = max(
+                highestZIndex,
+                zIndex
             )
         }
     }
 
+
+    // MARK: - Select Item
+
+    private func selectItem(at location: CGPoint) {
+
+        for item in editableItems.reversed() {
+
+            let centerX =
+                editorSize.width / 2
+                + item.position.width
+
+            let centerY =
+                editorSize.height / 2
+                + item.position.height
+
+            let width =
+                CollageGenerator.editorItemSize.width
+                * item.scale
+
+            let height =
+                CollageGenerator.editorItemSize.height
+                * item.scale
+
+            let itemFrame = CGRect(
+                x: centerX - width / 2,
+                y: centerY - height / 2,
+                width: width,
+                height: height
+            )
+
+            if itemFrame.contains(location) {
+
+                selectedItemID = item.id
+
+                return
+            }
+        }
+
+        selectedItemID = nil
+    }
+
+
+    // MARK: - Update Selected Item
+
+    private func updateSelectedItem(
+        _ update: (inout EditableOutfitItem) -> Void
+    ) {
+
+        guard let selectedItemID else {
+            return
+        }
+
+        guard let index = editableItems.firstIndex(
+            where: { $0.id == selectedItemID }
+        ) else {
+            return
+        }
+
+        update(&editableItems[index])
+    }
+    
+    
     // MARK: - Delete
 
     private func deleteSelectedItem() {
@@ -433,6 +550,7 @@ struct OutfitEditorView: View {
 
         self.selectedItemID = nil
     }
+
 
     // MARK: - Save
 
@@ -509,6 +627,7 @@ struct OutfitEditorView: View {
         dismiss()
     }
 }
+
 
 #Preview {
 

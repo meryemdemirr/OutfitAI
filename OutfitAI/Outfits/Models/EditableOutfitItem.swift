@@ -21,14 +21,17 @@ struct EditableOutfitItem: Identifiable {
     var rotation: Angle
     var lastRotation: Angle
 
+    var zIndex: Double
+
     init(
         clothingItem: ClothingItem,
         position: CGSize = .zero,
         scale: CGFloat = 1.0,
-        rotation: Angle = .zero
+        rotation: Angle = .zero,
+        zIndex: Double = 0
     ) {
 
-        self.id = clothingItem.id
+        self.id = UUID()
         self.clothingItem = clothingItem
 
         self.position = position
@@ -39,5 +42,8 @@ struct EditableOutfitItem: Identifiable {
 
         self.rotation = rotation
         self.lastRotation = rotation
+
+        self.zIndex = zIndex
     }
 }
+
